@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+
+
+.header{
+    background-color: #0F0F0F;
+}
+
+.header_inner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo img{
+    width: 150px;
+}
+
+.header-links{
+    width: 55%;
+}
+
+.navbar{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.header_links-list{
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header_links-list-item a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: capitalize;
+    font-family: 'Tilt Neon', sans-serif;
+}

@@ -1,0 +1,48 @@
+.font-montserrat{
+    font-family: 'Montserrat',sans-serif;
+}
+
+.book-list{
+    list-style-type: none;
+    margin: 25px auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.book-list-item{
+    width: 31%;
+}
+
+.book-box{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 5px;
+    padding: 15px 10px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 0 2px 2px rgba(0,0,0,0.11), 0 4px 4px rgba(0,0,0,0.11), 0 6px 8px rgba(0,0,0,0.11), 0 8px 16px rgba(0,0,0,0.11);
+}
+
+.book-image{
+    width: 30%;
+}
+
+.book-image img{
+    width: 100%;
+    display: block;
+}
+
+.book-info{
+    margin-left: 15px;
+    font-family: 'Montserrat',sans-serif;
+}
+
+.book-title{
+    margin: 10px 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+

@@ -1,0 +1,32 @@
+.account-box{
+    width: 98%;
+    margin: 20px auto;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DFD3C3;
+    padding: 10px 15px;
+}
+
+.account-title{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 25px;
+    margin: 0;
+}
+
+.account-subtitle{
+    font-family: 'Montserrat',sans-serif;
+}
+
+.account-btn button{
+    background: inherit;
+    border: none;
+    color: #0F0F0F;
+    outline: none;
+
+}
+
+.account-btn button svg{
+    font-size: 25px;
+}

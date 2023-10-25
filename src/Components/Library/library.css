@@ -1,0 +1,4 @@
+.library-wrapper{
+    width: calc(100% - 335px);
+    margin-left: 335px;
+}

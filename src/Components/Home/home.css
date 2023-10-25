@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+/* ===== INTRO ====== */
+
+.intro_inner{
+    background-image: url("https://wallpapers.com/images/hd/code-text-programming-letters-symbols-0b6excz2s1qz1koa.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    width: 100%;
+    height: 450px;
+    margin: 25px auto;
+    opacity: 0.75;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.intro-title{
+    color: #fff;
+    margin-left: 25px;
+    width: 545px;
+}
+
+.intro-btn{
+    width: 135px;
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-left: 25px;
+    background-color: #19A7CE;
+    color: #fff;
+}

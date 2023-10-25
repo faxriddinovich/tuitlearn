@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Gabarito:wght@500&family=Montserrat&family=Poppins:wght@600&display=swap');
+
+.courses-list{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.courses-list-item{
+    width: 24%;
+}
+
+.course-box{
+    border-radius: 10px;
+    padding: 0;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: box-shadow 0.3s ease;
+}
+
+.course-box:hover{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.image-box{
+    width: 100%;
+}
+
+.image-box img{
+    display: block;
+    width: 100%;
+    height: 175px;
+    border-radius: 10px 10px 0 0;
+}
+
+.course_box-footer{
+    padding: 0px 10px;
+}
+
+.course-title{
+    font-family: 'Gabarito',sans-serif;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.course-subtitle{
+    font-size: 15px;
+    line-height: 1;
+    text-align: justify;
+    font-family: 'Montserrat',sans-serif;
+}

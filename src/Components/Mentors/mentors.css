@@ -1,0 +1,6 @@
+.slick-item img{
+    margin: 0 auto;
+    border-radius: 50% !important;
+    width: 150px;
+    height: 150px;
+}
