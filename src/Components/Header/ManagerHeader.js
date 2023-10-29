@@ -17,15 +17,15 @@ function ManagerHeader(){
                         <nav className={'navbar'}>
                             <ul className={'header_links-list'}>
                                 <li className={'header_links-list-item'}>
-                                    <Link to={'/'}>Manager</Link>
+                                    <Link to={'/'}>Home</Link>
                                 </li>
 
                                 <li className={'header_links-list-item'}>
-                                    <Link to={'/library'}>Kutubxona</Link>
+                                    <Link to={'/manager-library'}>Kutubxona</Link>
                                 </li>
 
                                 <li className={'header_links-list-item'}>
-                                    <Link to={'/manager-classroom'}>Sinfxona</Link>
+                                    <Link to={'/manager-classroom'}>Sinfxonam</Link>
                                 </li>
 
                                 <li className={'header_links-list-item'}>

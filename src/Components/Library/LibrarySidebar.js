@@ -1,19 +1,19 @@
-import React, {useState} from 'react'
-import {Link, useNavigate} from "react-router-dom";
+import React, { useState } from 'react'
+import { Link, useNavigate } from "react-router-dom";
 import sidebarLogo from '../../images/header-logo.png'
-
-import './sidebar.css'
 import MyCourses from "../Courses/MyCourses";
 import CoursesList from "../Courses/CoursesList";
+import Tasks from "../Classroom/Tasks";
 
-function LibrarySidebar({handleClick}){
+import './sidebar.css'
+
+function LibrarySidebar({handleClick,userId}){
 
     const [active,setActive] = useState('mycourses')
     const navigate = useNavigate()
 
     function changeComponent(component,id){
         setActive(id)
-        console.log(id)
         handleClick(component)
     }
 
@@ -30,6 +30,10 @@ function LibrarySidebar({handleClick}){
 
                     <li className={`sidebar-list-item ${active==='allcourses' ? 'active' : ''}`} id={'allcourses'} onClick={()=>changeComponent(<CoursesList/>,'allcourses')}>
                         Barcha kurslar
+                    </li>
+
+                    <li className={`sidebar-list-item ${active==='tasks' ? 'active' : ''}`} id={'tasks'} onClick={()=>changeComponent(<Tasks userId={userId}/>,'tasks')}>
+                        Topshiriqlar
                     </li>
 
                     <li className={`sidebar-list-item ${active==='home' ? 'active' : ''}`} id={'home'} onClick={() => navigate('/')}>

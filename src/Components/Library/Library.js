@@ -4,7 +4,7 @@ import MyCourses from "../Courses/MyCourses";
 
 import './library.css'
 
-function Library(){
+function Library({userId}){
 
     const [activeComponent,setActiveComponent] = useState(<MyCourses/>)
 
@@ -14,7 +14,7 @@ function Library(){
 
     return(
         <>
-            <LibrarySidebar handleClick={handleClick}/>
+            <LibrarySidebar handleClick={handleClick} userId={userId}/>
             <div className={'library-wrapper'}>
                 <div className={'container'}>
                     <div className={'row'}>
