@@ -2,6 +2,7 @@ import React from 'react'
 import {db} from "../../firebase/firebase";
 import {collection} from "firebase/firestore";
 import {useCollectionData} from "react-firebase-hooks/firestore";
+import nextId from 'react-id-generator';
 
 export default function UsersList(){
 
@@ -16,7 +17,7 @@ export default function UsersList(){
                     {loading ? <h1 className={'text-center'}>Loading....</h1> :
                         <ul className={'users-list list-group my-3'}>
                             <h2 className={'text-center my-2'}>Sayt foydalanuvchilari:</h2>
-                            {docs?.map(item=><li className={'users-list-item list-group-item'} key={item.id}>
+                            {docs?.map(item=><li className={'users-list-item list-group-item'} key={nextId()}>
                                 <p className={'p-0 m-0 w-100 d-flex justify-content-between'}>
                                     <strong>
                                         {item.username}

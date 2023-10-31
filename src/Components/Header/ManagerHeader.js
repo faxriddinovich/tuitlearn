@@ -29,7 +29,7 @@ function ManagerHeader(){
                                 </li>
 
                                 <li className={'header_links-list-item'}>
-                                    <Link to={'/contracts'}>Shartnomalar</Link>
+                                    <Link to={'/manager-contracts'}>Shartnomalar</Link>
                                 </li>
 
                                 <li className={'header_links-list-item'}>

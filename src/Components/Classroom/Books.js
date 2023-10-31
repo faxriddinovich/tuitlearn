@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {collection, getDocs} from "firebase/firestore";
+import React from "react";
+import {collection} from "firebase/firestore";
 import {db} from "../../firebase/firebase";
 import {AiOutlineDownload} from "react-icons/ai";
 
 import './books.css'
 import {downloadFileFromStorage} from "../../Funtions/functions";
 import {useCollectionData} from "react-firebase-hooks/firestore";
+import nextId from "react-id-generator";
 
 function Books(){
-
-    const [books,setBooks] = useState('')
 
     const query = collection(db,'books')
 
@@ -23,7 +22,7 @@ function Books(){
                     <h1 className={'text-center font-montserrat my-3'}>Elektron kitoblar:</h1>
                     {loading ? <h1 className={'text-center'}>Loading...</h1> :
                         <ul className={'book-list'}>
-                            {docs?.map(item => <li className={'book-list-item'} key={item.id}>
+                            {docs?.map(item => <li className={'book-list-item'} key={nextId()}>
                                 <div className={'book-box mb-3'}>
                                     <div className={'book-image'}>
                                         <img src={item.imageUrl} alt={item.title}/>

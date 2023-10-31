@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {db, storage} from "../../firebase/firebase";
-import {addCollectionToStorage, getSingleImage, uploadFile} from "../../Funtions/functions";
+import {addCollectionToStorage, toastPromiseSuccess, uploadFile} from "../../Funtions/functions";
 import {doc} from "firebase/firestore";
 import nextId from "react-id-generator";
-import {ref, listAll, getDownloadURL} from "firebase/storage";
+import {ref, getDownloadURL} from "firebase/storage";
 
 export default function AddBook(){
     const [bookData,setBookData] = useState('')
-    const [src,setSrc] = useState([])
     function handleInputChange(e){
         const inputType = e.target.type
         const { name, value } = e.target
@@ -39,7 +38,6 @@ export default function AddBook(){
             .catch(error=>console.log(error.message))
 
         // Uploading book-data
-        console.log(imageUrl,src)
         const pathId = nextId()
         const bookRef = doc(db,`books/${pathId}`)
 
@@ -50,7 +48,7 @@ export default function AddBook(){
             title:bookData.title,
             type:bookData.type
         })
-            .then(response=>console.log("Book added successfully",response))
+            .then(()=>toastPromiseSuccess("The book added successfully!"))
             .catch(error=>console.log(error.message))
     }
     return(

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth'
 import {auth, db} from '../../firebase/firebase'
+import {doc, getDoc} from "firebase/firestore";
+import {checkUserStatus, toastPromiseError, toastPromiseSuccess} from '../../Funtions/functions';
 
 import './login.css'
-import {doc, getDoc} from "firebase/firestore";
 
 function Login({setUserId,setRole,setAuthUser}){
 
@@ -23,32 +24,13 @@ function Login({setUserId,setRole,setAuthUser}){
         e.preventDefault()
         signInWithEmailAndPassword(auth,formData.email,formData.password)
             .then(userCredential=>{
-                console.log(userCredential)
+                toastPromiseSuccess('Signed in successfully!')
             })
-            .catch(error=>console.log(error.message))
+            .catch(error=>toastPromiseError(error.message))
     }
 
     useEffect(() => {
-        const listen = onAuthStateChanged(auth,async (user) => {
-            if (user){
-                const uid = user.uid
-                setUserId(uid)
-
-                const docRef = doc(db,'users',uid)
-                const docSnap = await getDoc(docRef)
-                if (docSnap.exists()){
-                    setRole(docSnap.data()?.role)
-                }
-                else console.log("No such document")
-                setAuthUser(user)
-            }
-            else {
-                setAuthUser(null)
-            }
-        })
-        return () => {
-            listen()
-        }
+        checkUserStatus(setUserId,setRole,setAuthUser)
     }, []);
 
     return(

@@ -1,7 +1,8 @@
 import {getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {collection, doc, getDoc, getDocs, setDoc} from 'firebase/firestore'
-import {db, storage} from '../firebase/firebase'
-import {getAuth, createUserWithEmailAndPassword} from "firebase/auth";
+import {auth, db, storage} from '../firebase/firebase'
+import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import { toast } from 'react-toastify'
 
 export async function uploadFile(url,file,storage){
     const storageRef = ref(storage,`${url}/${file.name}`)
@@ -52,11 +53,9 @@ export async function addCollectionToStorage(docRef,object){
 }
 
 export async function createUser(userData){
-    let userId;
     const auth = getAuth();
     createUserWithEmailAndPassword(auth,userData.email,userData.password)
         .then(async userCredential=>{
-            const docRef = doc(db,'users',userCredential.user.uid)
             console.log(userCredential.user.uid)
 
             addCollectionToStorage(doc(db,`attendances/${userCredential.user.uid}`,),{})
@@ -86,11 +85,48 @@ export async function createUser(userData){
         .catch(error=>console.log(error.message))
 }
 
-export function getSingleImage(path){
-    return getDownloadURL(ref(storage,path))
-        .then(url=> {
-            console.log(url)
-            return url
-        })
-        .catch(error=>error.message);
+export function checkUserStatus(setUserId,setRole,setAuthUser){
+    return onAuthStateChanged(auth,async (user) => {
+        if (user){
+            const uid = user.uid
+            setUserId(uid)
+
+            const docRef = doc(db,'users',uid)
+            const docSnap = await getDoc(docRef)
+            if (docSnap.exists()){
+                setRole(docSnap.data()?.role)
+            }
+            else console.log("No such document")
+            setAuthUser(user)
+        }
+        else {
+            setAuthUser(null)
+        }
+    })
+}
+
+export function toastPromiseSuccess(message){
+    return toast.success(message, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+}
+
+export function toastPromiseError(message){
+    return toast.error(message, {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    });
 }

@@ -10,6 +10,10 @@ import Contracts from "./Components/Contracts/Contracts";
 import ManagersClassroom from "./Components/Classroom/ManagersClassroom";
 import ManagerLibrary from "./Components/Library/ManagerLibrary";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import ManagerContract from "./Components/Contracts/ManagerContract";
+
 function App() {
 
   const [ authUser, setAuthUser ] = useState(null)
@@ -28,42 +32,40 @@ function App() {
     setRole(newState)
   }
 
-
-
-  useEffect(()=>{
-
-  },[])
-
   return (
-          <Routes>
-            {
-              authUser ?
-                  <>
-                    {
-                      role==='student' ?
-                          <>
-                            <Route path={'/'} element={<Home/>}/>
-                            <Route path={'/library'} element={<Classroom/>}/>
-                            <Route path={'/account'} element={<Account username = { authUser.email } role = { role }/>}/>
-                            <Route path={'/classroom'} element={<Library userId = { userId }/>}/>
-                            <Route path={'/contracts'} element={<Contracts userId = { userId }/>}/>
-                          </> :
+    <>
+      <Routes>
+        {
+          authUser ?
+              <>
+                {
+                  role === 'student' ?
+                      <>
+                        <Route path={'/'} element={<Home/>}/>
+                        <Route path={'/library'} element={<Classroom/>}/>
+                        <Route path={'/account'} element={<Account username={authUser.email} role={role} setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole} authUser={authUser}/>}  />
+                        <Route path={'/classroom'} element={<Library userId = { userId }/>}/>
+                        <Route path={'/contracts'} element={<Contracts userId = { userId }/>}/>
+                      </> :
 
-                          <>
-                            <Route path={'/'} element={<ManagerHome/>}/>
-                            <Route path={'/manager-library'} element={<ManagerLibrary/>}/>
-                            <Route path={'/account'} element={<Account username={authUser.email} role={role}/>}/>
-                            <Route path={'/manager-classroom'} element={<ManagersClassroom/>}/>
-                            <Route path={'*'} element={<ManagerHome/>}/>
-                          </>
-                    }
-                  </> :
-                  <>
-                    <Route path={'/login'} element={<Login setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole}/>}/>
-                    <Route path={'*'} element={<Login setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole}/>}/>
-                  </>
-            }
-          </Routes>
+                      <>
+                        <Route path={'/'} element={<ManagerHome/>}/>
+                        <Route path={'/manager-library'} element={<ManagerLibrary/>}/>
+                        <Route path={'/account'} element={<Account username = { authUser.email } role = { role } setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole} authUser={authUser} />}/>
+                        <Route path={'/manager-classroom'} element={<ManagersClassroom/>}/>
+                        <Route path={'/manager-contracts'} element={<ManagerContract/>}/>
+                        <Route path={'*'} element={<ManagerHome/>}/>
+                      </>
+                }
+              </> :
+              <>
+                <Route path={'/login'} element={<Login setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole}/>}/>
+                <Route path={'*'} element={<Login setUserId={changeUserId} setAuthUser={changeAuthUser} setRole={changeRole}/>}/>
+              </>
+        }
+      </Routes>
+      <ToastContainer/>
+    </>
   );
 }
 

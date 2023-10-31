@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {createUser} from "../../Funtions/functions";
+import {createUser, toastPromiseSuccess} from "../../Funtions/functions";
 
 export default function AddUser(){
     const [ userData,setUserData ] = useState('')
@@ -12,7 +12,7 @@ export default function AddUser(){
         e.preventDefault()
         console.log(userData)
         createUser(userData)
-            .then(response=>console.log("User created successfully"))
+            .then(()=>toastPromiseSuccess("User created successfully"))
             .catch(error=>console.log(error.message))
     }
     return(

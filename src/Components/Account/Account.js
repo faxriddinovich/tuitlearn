@@ -1,18 +1,25 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Header from "../Header/Header";
 import {FiLogOut} from "react-icons/fi";
 import { signOut } from 'firebase/auth'
+import {checkUserStatus, toastPromiseError, toastPromiseSuccess} from '../../Funtions/functions';
+import { onAuthStateChanged } from 'firebase/auth';
+import {auth, db} from '../../firebase/firebase'
+import {doc, getDoc} from "firebase/firestore";
 
 import './account.css'
-import {auth} from "../../firebase/firebase";
 
-function Account({username,role}){
+function Account({username,role,setUserId,setRole,setAuthUser,authUser}){
 
     function handleSignOut(){
         signOut(auth).then(() => {
-            console.log('Sign out successfully')
-        }).catch(error=>console.log(error.message))
+            toastPromiseSuccess('Sign out successfully')
+        }).catch(error=>toastPromiseError(error.message))
     }
+
+    useEffect(() => {
+        checkUserStatus(setUserId,setRole,setAuthUser)
+    }, []);
 
     return(
         <>
@@ -40,5 +47,5 @@ function Account({username,role}){
         </>
     )
 }
-
+const MemoizedComponent = React.memo(Account)
 export default Account

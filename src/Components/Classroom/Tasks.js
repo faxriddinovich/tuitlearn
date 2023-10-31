@@ -1,22 +1,32 @@
 import React, {useEffect, useState} from 'react'
-import {getCollectionFromStore, getOnlyOneDataFromStore} from "../../Funtions/functions";
+import {downloadFileFromStorage, getCollectionFromStore, getOnlyOneDataFromStore} from "../../Funtions/functions";
+import {useCollection, useCollectionData} from "react-firebase-hooks/firestore";
+import {collection} from "firebase/firestore";
+import {db} from "../../firebase/firebase";
+import {AiOutlineDownload} from "react-icons/ai";
 
 function Tasks({userId}){
     const [tasks,setTasks] = useState('')
 
+    const query = collection(db,`tasks/${userId}/uniquetask`)
+    const [docs, loading, error] = useCollectionData(query)
+
     useEffect(() => {
-        getCollectionFromStore('tasks')
-            .then(querySnapshot=>{
-                const tasks = querySnapshot.docs.map(item=>({...item.data(),id:item.id}))
-                console.log(tasks)
-            }).catch(error=>console.log(error.message))
-    }, []);
+        if (!loading) console.log(docs)
+    }, [docs]);
     return(
         <section className={'tasks-section w-100'}>
             <div className={'container'}>
                 <div className={'row'}>
-                    <div className={'col-md-12'}>
-                        <ul className={'tasks-list p-0 mx-auto my-3 list-unstyled'}></ul>
+                    <div className={'col-md-12 font-montserrat'}>
+                        <h1 className={'text-center my-2'}>Sizning aktiv topshiriqlaringiz:</h1>
+                        {loading ? <h1 className={'text-center'}>Loading...</h1> : <ul className={'tasks-list p-0 mx-auto my-3 list-group'}>
+                            {docs.map(item=><li className={'list-group-item'} key={item.studentId}>
+                                <strong>{item.taskTitle}</strong>
+                                <p>{item.taskDescription}</p>
+                                <button type="button" className={'btn btn-outline-primary'} onClick={()=>downloadFileFromStorage(item.src)}>Download <AiOutlineDownload/></button>
+                            </li>)}
+                        </ul>}
                     </div>
                 </div>
             </div>

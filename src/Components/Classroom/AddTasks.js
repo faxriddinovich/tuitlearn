@@ -1,28 +1,33 @@
 import React, {useEffect, useState} from 'react'
-import {collection, doc, getDocs} from "firebase/firestore";
+import {collection, doc} from "firebase/firestore";
 import {db, storage} from "../../firebase/firebase";
 import {
-    addCollectionToStorage,
-    getCollectionFromStore,
+    addCollectionToStorage, getCollectionFromStore,
+    toastPromiseSuccess,
     uploadFile
 } from "../../Funtions/functions";
 import nextId from "react-id-generator";
 import {useCollectionData} from "react-firebase-hooks/firestore";
+import SelectUsers from "../Users/SelectUsers";
+import {getDownloadURL, ref} from "firebase/storage";
 
-function AddTasks(){
-    const [users,setUsers] = useState('')
-    const [ task, setTask ] = useState({
-        taskTitle:'',
-        taskDescription:'',
-        file:'',
-    })
+export default function AddTasks(){
+    const [username,setUsername] = useState('')
+    const [selectedStudents,setSelectedStudents] = useState([])
+    const [task,setTask] = useState('')
     const [sendingObject,setSendingObject] = useState('')
-    const [ selectedStudents, setSelectedStudents ] = useState([])
-    const [ username, setUsername ] = useState('')
 
-    const query = collection(db,'users')
+    function changeTasksUsername(item){
+        setUsername(item)
+    }
 
-    const [docs,loading,error] = useCollectionData(query)
+    function changeTasksSendingObject(item){
+        setSendingObject(item)
+    }
+
+    function changeTasksSelectedStudents(item){
+        setSelectedStudents(item)
+    }
 
     function handleInputChange(e){
         const inputType = e.target.type
@@ -37,63 +42,35 @@ function AddTasks(){
 
     }
 
-    const handleCheckboxChange = (event, studentId,username) => {
-        const isChecked = event.target.checked;
-        setUsername(username)
-        if (isChecked) {
-            setSelectedStudents((prevSelectedStudents) => [
-                ...prevSelectedStudents,
-                studentId,
-            ]);
 
-            setSendingObject(prevState => [
-                ...prevState,
-                {
-                    taskTitle: task.taskTitle,
-                    taskDescription: task.taskDescription,
-                    studentId
-                }
-            ])
-        } else {
-            setSelectedStudents((prevSelectedStudents) =>
-                prevSelectedStudents.filter((id) => id !== studentId)
-            );
-
-            setSendingObject(prevState => prevState.filter(id => id !== studentId))
-        }
-    }
-
-
-
-    function handleCreateSubcollection(e){
+    function handleSubmit(e){
         e.preventDefault()
 
+        uploadFile('tasks',task.file,storage)
+            .then(response=>console.log(response,'File added to storage successfully'))
+            .catch(error=>console.log(error))
+
         selectedStudents.forEach(async userId => {
-            const pathId = nextId()
-            const docRef = doc(db,`tasks/${userId}/${username}/${pathId}`)
-            const taskData = sendingObject.find(student => student.studentId === userId)
-            uploadFile('tasks',task.file,storage)
-                .then(response=>console.log('File added to storage successfully'))
+            const fileUrl = await getDownloadURL(ref(storage,`tasks/${task.file.name}`))
+                .then(url=>url)
                 .catch(error=>console.log(error.message))
-            addCollectionToStorage(docRef,taskData)
-                .then(response=>console.log('Task sent to student successfully'))
+
+            const pathId = nextId()
+            const taskRef = doc(db,`tasks/${userId}`)
+            await addCollectionToStorage(taskRef,{username:username})
+            const taskData = sendingObject.find(student => student.studentId === userId)
+            const subTaskRef = doc(db,`tasks/${userId}/uniquetask/${pathId}`)
+            addCollectionToStorage(subTaskRef,{
+                studentId:userId,
+                taskDescription:taskData.taskDescription,
+                taskTitle:taskData.taskTitle,
+                src:fileUrl
+            })
+                .then(()=>toastPromiseSuccess("The task sent to the user successfully!"))
                 .catch(error=>console.log(error.message))
         })
     }
 
-
-    async function fetchData(){
-        await getDocs(collection(db,'users'))
-            .then(querySnapshot=>{
-                const newData = querySnapshot.docs.map(item=>({...item.data(),id:item.id}))
-                setUsers(newData.filter(item=> item.role === 'student'))
-            })
-            .catch(err=>console.log(err.message))
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, []);
     return(
         <section className={'tasks-section my-3'}>
             <div className={'container'}>
@@ -101,7 +78,7 @@ function AddTasks(){
                     <div className={'col-md-12'}>
                         <div className={'task-box font-montserrat'}>
                             <h3>Topshiriq qo'shish:</h3>
-                            <form action="" className={'form-control'}>
+                            <form className={'form-control'} onSubmit={handleSubmit}>
                                 <label>Topshiriq nomini kiriting:</label> <br/>
                                 <input type="text" placeholder={'Task 1'} name={'taskTitle'} onChange={handleInputChange} className={'form-control'}/> <br/>
                                 <label>Topshiriq tavsifi:</label> <br/>
@@ -112,23 +89,11 @@ function AddTasks(){
                                 <label>Topshiriq kimga yuborilsin:</label>
 
                                 <div className={'students-box my-2'}>
-                                    {loading ? <h1 className={'text-center my-2'}>Loading...</h1> :
-                                        <ul className={'students-list list-group'}>
-                                            {docs?.filter(item=> item.role === 'student').map(item=><li className={'students-list-item list-group-item d-flex justify-content-between'} key={item.id}>
-                                                <label className={'d-flex justify-between align-items-center'} htmlFor={item.id}>
-                                                    <strong>{item.username}</strong>
-                                                </label>
-
-                                                <div className={'check-box'}>
-                                                    <input type="checkbox" checked={selectedStudents.includes(item.id)} onChange={(event)=>handleCheckboxChange(event,item.id,item.username)} id={item.id}/>
-                                                </div>
-                                            </li>)}
-                                        </ul>
-                                    }
+                                    <SelectUsers setUsername={changeTasksUsername} setSendingObject={changeTasksSendingObject} setSelectedStudents={changeTasksSelectedStudents} selectedStudents={selectedStudents} task={task} goal={'task'}/>
                                 </div>
 
                                 <div className={'div-footer'}>
-                                    <button type="submit" className={'btn btn-dark'} onClick={handleCreateSubcollection}>Jo'natish</button>
+                                    <button type="button" className={'btn btn-dark'} onClick={handleSubmit}>Jo'natish</button>
                                 </div>
                             </form>
                         </div>
@@ -138,5 +103,3 @@ function AddTasks(){
         </section>
     )
 }
-
-export default AddTasks
