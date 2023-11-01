@@ -1,13 +1,12 @@
-import React, {useEffect, useState} from 'react'
-import {collection, doc} from "firebase/firestore";
+import React, {useState} from 'react'
+import {doc} from "firebase/firestore";
 import {db, storage} from "../../firebase/firebase";
 import {
-    addCollectionToStorage, getCollectionFromStore,
+    addCollectionToStorage,
     toastPromiseSuccess,
     uploadFile
 } from "../../Funtions/functions";
 import nextId from "react-id-generator";
-import {useCollectionData} from "react-firebase-hooks/firestore";
 import SelectUsers from "../Users/SelectUsers";
 import {getDownloadURL, ref} from "firebase/storage";
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth'
-import {auth, db} from '../../firebase/firebase'
-import {doc, getDoc} from "firebase/firestore";
+import {signInWithEmailAndPassword} from 'firebase/auth'
+import {auth} from '../../firebase/firebase'
 import {checkUserStatus, toastPromiseError, toastPromiseSuccess} from '../../Funtions/functions';
 
 import './login.css'

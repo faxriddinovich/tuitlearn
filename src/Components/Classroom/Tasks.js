@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import {downloadFileFromStorage, getCollectionFromStore, getOnlyOneDataFromStore} from "../../Funtions/functions";
-import {useCollection, useCollectionData} from "react-firebase-hooks/firestore";
+import {downloadFileFromStorage} from "../../Funtions/functions";
+import {useCollectionData} from "react-firebase-hooks/firestore";
 import {collection} from "firebase/firestore";
 import {db} from "../../firebase/firebase";
 import {AiOutlineDownload} from "react-icons/ai";
 
 function Tasks({userId}){
-    const [tasks,setTasks] = useState('')
 
     const query = collection(db,`tasks/${userId}/uniquetask`)
     const [docs, loading, error] = useCollectionData(query)
 
-    useEffect(() => {
-        if (!loading) console.log(docs)
-    }, [docs]);
     return(
         <section className={'tasks-section w-100'}>
             <div className={'container'}>

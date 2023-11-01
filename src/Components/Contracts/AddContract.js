@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {
     addCollectionToStorage,
-    getCollectionFromStore,
     toastPromiseSuccess,
     uploadFile
 } from "../../Funtions/functions";
-import nextId from "react-id-generator";
 import SelectUsers from "../Users/SelectUsers";
 import {doc} from "firebase/firestore";
 import {db, storage} from "../../firebase/firebase";
@@ -53,12 +51,6 @@ export default function AddContract() {
             })
                 .then(()=>toastPromiseSuccess("The contract sent to the user successfully!"))
                 .catch(error=>console.log(error.message))
-            // uploadFile('contracts',task.file,storage)
-            //     .then(response=>console.log('File added to storage successfully'))
-            //     .catch(error=>console.log(error.message))
-            // addCollectionToStorage(docRef,contractData)
-            //     .then(response=>toastPromiseSuccess('Task sent successfully to the student!'))
-            //     .catch(error=>console.log(error.message))
         })
     }
 

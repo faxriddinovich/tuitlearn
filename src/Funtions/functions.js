@@ -1,6 +1,6 @@
 import {getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {collection, doc, getDoc, getDocs, setDoc} from 'firebase/firestore'
-import {auth, db, storage} from '../firebase/firebase'
+import {auth, db} from '../firebase/firebase'
 import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
 import { toast } from 'react-toastify'
 
@@ -28,17 +28,6 @@ export async function downloadFileFromStorage(link){
           linkFile.click()
         })
         .catch(error => console.log(error.message))
-}
-
-export async function getOnlyOneDataFromStore(userId,link){
-  const docRef = doc(db,link,userId)
-  const docSnap = await getDoc(docRef)
-  if(docSnap.exists()){
-      console.log('document exists')
-      return docSnap.data()
-  }
-
-  else console.log("document doesn't exist")
 }
 
 export async function getCollectionFromStore(path){

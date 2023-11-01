@@ -1,11 +1,9 @@
 import React,{useEffect} from 'react'
 import Header from "../Header/Header";
 import {FiLogOut} from "react-icons/fi";
-import { signOut } from 'firebase/auth'
+import {signOut} from 'firebase/auth'
 import {checkUserStatus, toastPromiseError, toastPromiseSuccess} from '../../Funtions/functions';
-import { onAuthStateChanged } from 'firebase/auth';
-import {auth, db} from '../../firebase/firebase'
-import {doc, getDoc} from "firebase/firestore";
+import {auth} from '../../firebase/firebase'
 
 import './account.css'
 
